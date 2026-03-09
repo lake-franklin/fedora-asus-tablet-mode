@@ -1,0 +1,22 @@
+[Unit]
+Description=Tablet mode daemon for ASUS 2-in-1 (hinge WMI events)
+Documentation=https://github.com/youruser/tablet-mode-daemon
+After=graphical-session.target acpid.service
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/tablet-mode-daemon
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Give the process time to shut down gracefully
+TimeoutStopSec=10
+
+# Hinge window can be tuned here without touching the script
+# ExecStart=%h/.local/bin/tablet-mode-daemon --hinge-window 3.0
+
+[Install]
+WantedBy=graphical-session.target

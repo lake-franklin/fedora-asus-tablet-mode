@@ -1,0 +1,15 @@
+# /etc/udev/rules.d/99-input-inhibit.rules
+#
+# Grant the 'input' group write access to the sysfs inhibited attribute
+# for all input devices. This allows tablet-mode-daemon to inhibit the
+# keyboard and touchpad without requiring root or polkit.
+#
+# Setup:
+#   sudo cp 99-input-inhibit.rules /etc/udev/rules.d/
+#   sudo groupadd -f input
+#   sudo usermod -aG input $USER   # then log out and back in
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+
+SUBSYSTEM=="input", ACTION=="add", \
+    RUN+="/bin/chmod g+w /sys%p/inhibited", \
+    RUN+="/bin/chgrp input /sys%p/inhibited"
